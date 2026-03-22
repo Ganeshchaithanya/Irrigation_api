@@ -1,0 +1,16 @@
+# Env
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Flutter
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# OS
+.DS_Store
+Thumbs.db
