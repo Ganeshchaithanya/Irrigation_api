@@ -4,3 +4,8 @@ __pycache__/
 venv/
 .env.*
 *.db
+chroma_db/
+*.bin
+*.log
+__pycache__/
+.env
