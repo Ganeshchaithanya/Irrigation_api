@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Agri-Expert</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- HTMX for Real-time Interaction -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Chart.js for Interactive Trends -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Premium Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar: Farm Context -->
+        <aside class="panel sidebar">
+            <div class="brand">🌱 Agri-Expert</div>
+            
+            <div class="context-card">
+                <p class="text-dim">Current Farm</p>
+                <h3>{{ farm.name if farm else 'Alpha Farm v1' }}</h3>
+                <p class="badge badge-active">{{ farm.location if farm else 'Bengaluru Region' }}</p>
+            </div>
+
+            <nav class="nav-menu">
+                <p class="text-dim" style="font-size: 12px; margin-bottom: 10px;">MAIN MENU</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="#" class="nav-item active">📊 Dashboard</a>
+                    <a href="#" class="nav-item">🌦️ Weather Intelligence</a>
+                    <a href="#" class="nav-item">📈 Analytics</a>
+                    <a href="#" class="nav-item">⚙️ Hardware Config</a>
+                </div>
+            </nav>
+
+            <div class="footer-metrics" style="margin-top: auto;">
+                <p class="text-dim">Total Water Saved</p>
+                <h2 style="color: var(--primary);">4.2k Liters</h2>
+            </div>
+        </aside>
+
+        <!-- Main Content: Zone Monitor -->
+        <main class="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Field Intelligence Overview</h1>
+                <div id="live-indicator" style="display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: inline-block;"></span>
+                    LIVE MONITORING
+                </div>
+            </header>
+
+            <!-- Grid of Zones (Populated by HTMX) -->
+            <section id="zone-grid-container" 
+                     class="zone-grid" 
+                     hx-get="/dashboard/zones" 
+                     hx-trigger="load, every 10s">
+                <div class="panel" style="grid-column: 1/-1; text-align: center;">
+                    ⌛ Initializing Botanical Sensors...
+                </div>
+            </section>
+
+            <!-- Trend Analytics Section -->
+            <section class="panel" style="flex: 1;">
+                <h3>Moisture & Flow Trends (24h)</h3>
+                <canvas id="moistureChart" height="100"></canvas>
+            </section>
+        </main>
+
+        <!-- Expert Panel: AI Interaction -->
+        <aside class="panel expert-panel">
+            <h3>Agri-Expert AI 🤖</h3>
+            <p class="text-dim" style="font-size: 13px;">Your Personal Agricultural Consultant</p>
+            
+            <div id="chat-window" style="flex: 1; margin: 20px 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                <div class="ai-msg" style="background: rgba(0,255,163,0.1); padding: 12px; border-radius: 12px; font-size: 14px;">
+                    Welcome back! Based on today's heat (42°C), I've optimized the Zaid season Kc values for your Tomato zones.
+                </div>
+            </div>
+
+            <div class="chat-controls">
+                <input type="text" class="chat-input" placeholder="Ask about crop health or irrigation...">
+                <button style="background: var(--primary); color: black; border: none; width: 100%; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: 600;">CONSULT EXPERT</button>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Initialize Chart.js for trends
+        const ctx = document.getElementById('moistureChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['12am', '4am', '8am', '12pm', '4pm', '8pm'],
+                datasets: [{
+                    label: 'Soil Moisture %',
+                    data: [45, 42, 40, 38, 35, 55],
+                    borderColor: '#00FFA3',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

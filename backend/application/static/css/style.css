@@ -1,0 +1,131 @@
+:root {
+  --bg-deep: #050E06;
+  --bg-card: rgba(11, 32, 16, 0.7);
+  --primary: #00FFA3;
+  --secondary: #00D1FF;
+  --text-main: #E0E0E0;
+  --text-dim: #A0A0A0;
+  --danger: #FF4D4D;
+  --border: rgba(0, 255, 163, 0.1);
+  --glass: blur(10px);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-main);
+  background-image: radial-gradient(circle at top right, rgba(0, 255, 163, 0.05), transparent),
+                    radial-gradient(circle at 10% 20%, rgba(0, 209, 255, 0.03), transparent);
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 280px 1fr 340px;
+  gap: 20px;
+  padding: 20px;
+  height: 100vh;
+}
+
+/* Glass Panels */
+.panel {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Premium Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.brand {
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00FFA3, #00D1FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Zone Grid */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.zone-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.zone-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.moisture-ring {
+  width: 80px;
+  height: 80px;
+  margin: 10px 0;
+}
+
+/* Status Indicators */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.badge-active { background: rgba(0, 255, 163, 0.2); color: var(--primary); }
+.badge-alert { background: rgba(255, 77, 77, 0.2); color: var(--danger); }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+/* Agri-Expert Chat Panel */
+.expert-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
+}

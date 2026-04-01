@@ -1,0 +1,95 @@
+[
+    {
+        "name": "HEALTHY_STEADY",
+        "description": "Standard operation with normal moisture and battery.",
+        "sensor_data": {
+            "id": "node_1",
+            "moisture": 45.0,
+            "temp": 28.0,
+            "humidity": 65.0,
+            "battery": 85,
+            "flow": 0.0,
+            "rain": 0.0,
+            "solar": 500
+        },
+        "state": "IDLE"
+    },
+    {
+        "name": "LEAK_DETECTED",
+        "description": "System is idle but flow is detected.",
+        "sensor_data": {
+            "id": "node_1",
+            "moisture": 42.0,
+            "temp": 27.5,
+            "humidity": 66.0,
+            "battery": 82,
+            "flow": 0.8,
+            "rain": 0.0,
+            "solar": 480
+        },
+        "state": "IDLE"
+    },
+    {
+        "name": "PIPE_BURST",
+        "description": "Extremely high flow during irrigation.",
+        "sensor_data": {
+            "id": "node_1",
+            "moisture": 50.0,
+            "temp": 29.0,
+            "humidity": 60.0,
+            "battery": 80,
+            "flow": 6.5,
+            "rain": 0.0,
+            "solar": 550
+        },
+        "state": "IRRIGATING"
+    },
+    {
+        "name": "SUDDEN_MOISTURE_DROP",
+        "description": "Rapid moisture decrease (>10% drop).",
+        "sensor_data": {
+            "id": "node_1",
+            "moisture": 25.0,
+            "temp": 32.0,
+            "humidity": 55.0,
+            "battery": 78,
+            "flow": 0.0,
+            "rain": 0.0,
+            "solar": 600
+        },
+        "previous_data": {
+            "moisture": 45.0
+        },
+        "state": "IDLE"
+    },
+    {
+        "name": "LOW_BATTERY_WARNING",
+        "description": "Battery level below warning threshold (30%).",
+        "sensor_data": {
+            "id": "node_1",
+            "moisture": 40.0,
+            "temp": 28.0,
+            "humidity": 65.0,
+            "battery": 25,
+            "flow": 0.0,
+            "rain": 0.0,
+            "solar": 150
+        },
+        "state": "IDLE"
+    },
+    {
+        "name": "RAIN_DURING_IRRIGATION",
+        "description": "System is irrigating while rain is detected.",
+        "sensor_data": {
+            "id": "node_1",
+            "moisture": 60.0,
+            "temp": 22.0,
+            "humidity": 90.0,
+            "battery": 75,
+            "flow": 1.5,
+            "rain": 5.0,
+            "solar": 50
+        },
+        "state": "IRRIGATING"
+    }
+]

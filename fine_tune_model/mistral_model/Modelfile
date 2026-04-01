@@ -1,0 +1,20 @@
+FROM mistral:latest
+
+# Import the fine-tuned LoRA adapter (assuming it's converted to GGUF or used via adapter path)
+# Note: LoRA weights must be merged or used as an ADAPTER in Ollama
+# ADAPTER ./mistral-crop-stage-lora
+
+TEMPLATE """[INST] {{ .System }} {{ .Prompt }} [/INST]"""
+
+SYSTEM """
+You are a specialized Agronomy Assistant focused strictly on Crop Stage Awareness. 
+Your goal is to identify growth stages, moisture requirements, and critical operations for crops in Kharif, Rabi, and Zaid seasons.
+Use the provided precision data to give accurate soil moisture ranges and irrigation frequencies.
+Do not provide general crop planning or financial advice.
+"""
+
+PARAMETER stop "[INST]"
+PARAMETER stop "[/INST]"
+PARAMETER stop "</s>"
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9
