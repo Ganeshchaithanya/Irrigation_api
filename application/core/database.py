@@ -2,20 +2,28 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from application.core.config import settings
 
-# For TimescaleDB/PostgreSQL, pool configuration is essential
+import os
+
+print("DATABASE_URL:", settings.DATABASE_URL)
+
+DATABASE_URL = settings.DATABASE_URL
+
+if not DATABASE_URL or DATABASE_URL.startswith("sqlite"):
+    raise ValueError("DATABASE_URL not set or is using SQLite fallback! Set the PostgreSQL URL in your environment.")
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 engine_kwargs = {
     "pool_pre_ping": True,
+    "pool_size": 5,
+    "max_overflow": 10,
 }
-
-# Only use postgres-specific pooling/ssl if it's actual postgres
-if settings.DATABASE_URL.startswith("postgres"):
-    engine_kwargs["pool_size"] = 5
-    engine_kwargs["max_overflow"] = 10
-    if "localhost" not in settings.DATABASE_URL:
-        engine_kwargs["connect_args"] = {"sslmode": "require"}
+if "localhost" not in DATABASE_URL:
+    engine_kwargs["connect_args"] = {"sslmode": "require"}
 
 engine = create_engine(
-    settings.DATABASE_URL.replace("postgres://", "postgresql://", 1),
+    DATABASE_URL,
     **engine_kwargs
 )
 
