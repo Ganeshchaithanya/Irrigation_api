@@ -4,7 +4,6 @@ import io
 from datetime import datetime, date, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-import matplotlib.pyplot as plt
 from fpdf import FPDF
 from application.models import User, Farm, Acre, Zone, IrrigationLog, NodeData, Device, Report, ReportType, ReportStatus
 from application.schemas.report import DynamicReportRequest, ReportModule, ReportTheme
@@ -83,6 +82,7 @@ class ReportService:
     @staticmethod
     def _handle_chart_water(pdf, logs, report_id):
         if not logs: return
+        import matplotlib.pyplot as plt
         try:
             usage_by_day = {}
             for log in logs:
