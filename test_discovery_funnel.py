@@ -11,7 +11,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "backend", 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
-from llm.crop_plan_model import CropPlanModel
+from application.ai.specialists.crop_plan_model import CropPlanModel
 
 async def test_full_funnel():
     print("\n" + "🌱" * 15)

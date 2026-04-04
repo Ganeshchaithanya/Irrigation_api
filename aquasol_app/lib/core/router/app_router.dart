@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:aquasol_app/features/splash/presentation/splash_screen.dart';
 import 'package:aquasol_app/features/setup/presentation/setup_screen.dart';
 import 'package:aquasol_app/features/auth/presentation/auth_screen.dart';
+import 'package:aquasol_app/features/auth/presentation/signup_screen.dart';
 import 'package:aquasol_app/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:aquasol_app/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:aquasol_app/features/farm/presentation/farm_screen.dart';
@@ -35,6 +36,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/auth',
       builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => const SignupScreen(),
     ),
     GoRoute(
       path: '/onboarding',

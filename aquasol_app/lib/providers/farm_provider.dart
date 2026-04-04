@@ -6,7 +6,10 @@ import '../providers/auth_provider.dart';
 
 final farmProvider =
     StateNotifierProvider<FarmNotifier, AsyncValue<FarmModel>>(
-  (ref) => FarmNotifier(ref),
+  (ref) {
+    final authState = ref.watch(authProvider);
+    return FarmNotifier(ref, authState);
+  },
 );
 
 /// Derived providers for specific UI needs
@@ -26,20 +29,29 @@ final stressedZoneProvider = Provider<ZoneModel?>((ref) {
 
 class FarmNotifier extends StateNotifier<AsyncValue<FarmModel>> {
   final Ref _ref;
-  FarmNotifier(this._ref) : super(const AsyncLoading()) {
+  final AuthState _authState;
+
+  FarmNotifier(this._ref, this._authState) : super(const AsyncLoading()) {
     _init();
   }
 
   void _init() {
-    loadFarm();
+    if (_authState.isAuthenticated) {
+      loadFarm();
+    } else {
+      state = const AsyncValue.error('Authentication Required', StackTrace.empty);
+    }
   }
 
   Future<void> loadFarm({bool silent = false}) async {
     if (!silent) state = const AsyncLoading();
 
     try {
-      final auth = _ref.read(authProvider);
-      final userId = auth.userId ?? 'demo-user-001'; 
+      final userId = _authState.userId;
+      if (userId == null) {
+        state = const AsyncValue.error('Session Expired', StackTrace.empty);
+        return;
+      }
 
       final api = _ref.read(apiServiceProvider);
       final data = await api.getFarmData(userId);

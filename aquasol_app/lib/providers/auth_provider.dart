@@ -53,6 +53,53 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  Future<void> register(String name, String phone, String email, String password) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      await _api.register(name, phone, email, password);
+      // Auto-login after registration
+      final res = await _api.login(email, password);
+      state = state.copyWith(
+        isLoading: false,
+        userId: res['user_id'],
+        token: res['token'],
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> login(String email, String password) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final res = await _api.login(email, password);
+      state = state.copyWith(
+        isLoading: false,
+        userId: res['user_id'],
+        token: res['token'],
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> googleLogin(String email, String name, String googleId) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final res = await _api.googleLogin(email, name, googleId);
+      state = state.copyWith(
+        isLoading: false,
+        userId: res['user_id'],
+        token: res['token'],
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      rethrow;
+    }
+  }
+
   Future<void> verifyOtp(String phone, String code) async {
     state = state.copyWith(isLoading: true, error: null);
     try {

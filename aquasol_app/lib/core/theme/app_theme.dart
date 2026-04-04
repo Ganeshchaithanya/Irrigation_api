@@ -8,12 +8,12 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: AppColors.ivory,
+      scaffoldBackgroundColor: AppColors.background,
       primaryColor: AppColors.emerald,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.emerald,
         primary: AppColors.emerald,
-        secondary: AppColors.emeraldDark,
+        secondary: AppColors.navyDeep,
         surface: AppColors.surface,
         error: AppColors.danger,
       ),

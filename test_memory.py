@@ -5,7 +5,7 @@ import os
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from llm.vector_db import VectorDB
+from application.ai.specialists.vector_db import VectorDB
 
 async def test():
     try:

@@ -55,8 +55,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     try {
       final api = ref.read(apiServiceProvider);
       final lang = ref.read(languageProvider);
+      final auth = ref.read(authProvider);
       
-      final response = await api.askAI(query, language: lang);
+      final response = await api.askAI(query, userId: auth.userId!, language: lang);
 
       String displayMsg = response;
       List<dynamic> actions = [];
@@ -208,7 +209,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             ),
             if (actions.isNotEmpty) const SizedBox(height: 8),
             if (actions.isNotEmpty)
-              ...actions.map((act) => _buildActionButton(act)).toList(),
+              ...actions.map((act) => _buildActionButton(act)),
           ],
         ),
       ),

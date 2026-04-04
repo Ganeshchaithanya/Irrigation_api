@@ -6,17 +6,18 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 # Load env
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "backend", ".env"))
+# Load env from root
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
 
 # 1. Setup Python Path
 PROJECT_ROOT = os.getcwd()
 sys.path.insert(0, PROJECT_ROOT)
 
-# Import our Specialist Models
-from llm.crop_plan_model import CropPlanModel
-from llm.stage_awareness_model import StageAwarenessModel
-from ai_engine.models.anomaly_model import AnomalyModel
-from ai_engine.models.prediction_model import PredictionModel
+# Import our Specialist Models from centralized application location
+from application.ai.specialists.crop_plan_model import CropPlanModel
+from application.ai.specialists.stage_awareness_model import StageAwarenessModel
+from application.ai.models.anomaly_model import AnomalyModel
+from application.ai.models.prediction_model import PredictionModel
 
 async def test_strategic_planning():
     print("\n[PILLAR 1] Strategic Planning (Web Discovery + Guide RAG)...")
@@ -65,7 +66,7 @@ async def test_biological_decision():
     
     # 1. Stage Extraction
     print(f"   Resolving {crop} Protocol for Day {day} (Zaid Season)...")
-    stage_report = await stager.get_stage_context(crop, day, "Zaid")
+    stage_report = stager.get_stage_context(crop, day, "Zaid")
     
     # 2. Prediction Calculation
     weather = {"temp": 42.0, "rain_mm": 0.0, "condition": "Hot"}
@@ -76,7 +77,7 @@ async def test_biological_decision():
     
     if prediction and prediction.get("predicted_irrigation_need", 0) > 0:
         print(f"   ✅ SUCCESS: Irrigation required ({prediction['predicted_irrigation_need']}mm)")
-        print(f"   Model Outcome: {prediction['recommendation_text'][:80]}...")
+        print(f"   Model Outcome: {prediction.get('ai_reasoning', 'N/A')[:80]}...")
         return True
     return False
 
