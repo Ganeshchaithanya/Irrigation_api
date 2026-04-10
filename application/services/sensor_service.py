@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from application.models.sensor import ZoneData, NodeData, MasterData
+from application.models.sensor import ZoneData, NodeData, MasterData, SensorDataRaw
 from application.models.device import Device
 from application.models.analytics import ETData
 from application.schemas.sensor import SensorDataCreate
@@ -14,6 +14,14 @@ def calculate_et_proxy(temperature: float, humidity: float) -> float:
     return max(0.0, proxy)
 
 def create_sensor_data(db: Session, data: SensorDataCreate):
+    # 0. Raw Log for Hardware Audits
+    raw_log = SensorDataRaw(
+        device_id=data.device_id,
+        type="TELEMETRY",
+        payload=data.model_dump()
+    )
+    db.add(raw_log)
+
     # Lookup the exact UUID based on the string the hardware transmitted (esp_test_002)
     device = db.query(Device).filter(Device.device_uid == data.device_id).first()
     if not device:
@@ -32,6 +40,7 @@ def create_sensor_data(db: Session, data: SensorDataCreate):
             battery_percentage=data.battery_percentage,
             solar_voltage=data.solar_voltage,
             solar_efficiency=data.solar_efficiency,
+            valve_status=bool(data.valve_status),
             timestamp=data.timestamp
         )
         db.add(db_master)
@@ -46,6 +55,8 @@ def create_sensor_data(db: Session, data: SensorDataCreate):
             battery_percentage=data.battery_percentage,
             solar_voltage=data.solar_voltage,
             solar_efficiency=data.solar_efficiency,
+            valve_status=bool(data.valve_status),
+            commanded_state=bool(data.commanded_state),
             timestamp=data.timestamp
         )
         db.add(db_node)

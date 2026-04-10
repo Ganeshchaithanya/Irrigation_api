@@ -1,6 +1,6 @@
 from sqlalchemy import (
     Column, Integer, BigInteger, Boolean, Float, String,
-    DateTime, ForeignKey, Index, CheckConstraint
+    DateTime, ForeignKey, Index, CheckConstraint, JSON
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.sql import func
@@ -41,8 +41,8 @@ class NodeData(Base):
     solar_efficiency = Column(Float)
 
     # Hardware feedback fields
-    valve_status = Column(Boolean)       # actual valve state reported by device
-    commanded_state = Column(Boolean)    # last command sent to device
+    valve_status = Column(Boolean, nullable=False, default=False)       # actual valve state reported by device
+    commanded_state = Column(Boolean, nullable=False, default=False)    # last command sent to device
 
     timestamp = Column(DateTime, nullable=False, default=func.now())
 
@@ -66,6 +66,8 @@ class MasterData(Base):
     battery_percentage = Column(Float)
     solar_voltage = Column(Float)
     solar_efficiency = Column(Float)
+    
+    valve_status = Column(Boolean, nullable=False, default=False) # Consolidated pump/valve status for the Master
 
     timestamp = Column(DateTime, nullable=False, default=func.now())
 

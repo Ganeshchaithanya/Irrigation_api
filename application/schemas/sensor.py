@@ -1,4 +1,4 @@
-from pydantic import BaseModel, UUID4
+from pydantic import BaseModel, UUID4, field_validator
 from datetime import datetime
 from typing import Optional
 
@@ -22,6 +22,18 @@ class SensorDataCreate(BaseModel):
     solar_voltage: float = 0.0
     battery_percentage: float = 100.0
     solar_efficiency: float = 0.0
+    
+    # Hardware Status
+    valve_status: Optional[bool] = False
+    commanded_state: Optional[bool] = False
+    rssi: Optional[int] = None
+
+    @field_validator('valve_status', 'commanded_state', mode='before')
+    @classmethod
+    def validate_bool_or_none(cls, v):
+        if v is None:
+            return False
+        return v
 
 class ZoneDataResponse(BaseModel):
     id: int
@@ -39,6 +51,8 @@ class NodeDataResponse(BaseModel):
     battery_percentage: float
     solar_voltage: float
     solar_efficiency: float
+    valve_status: bool
+    rssi: Optional[int] = None
     timestamp: datetime
     class Config: from_attributes = True
 
@@ -50,6 +64,7 @@ class MasterDataResponse(BaseModel):
     battery_percentage: float
     solar_voltage: float
     solar_efficiency: float
+    valve_status: bool
     timestamp: datetime
     class Config: from_attributes = True
 
